@@ -1,0 +1,35 @@
+---
+author: admin
+comments: true
+date: 2012-06-05 13:28:52+00:00
+layout: post
+slug: misc
+title: 杂记
+wordpress_id: 884
+categories:
+- Tips
+---
+
+1，linux下process名字的长度
+
+这是某个困扰了好几天的bug，几个daemon改名字之后冲突了，下午突然发现/proc/<PID>/status中name项一模一样，但是只有前15个字符
+
+而我几个daemon的名字光相同部分就有20几个字母，放狗一搜，发现kernel中process是按照前15个字母来识别的：
+
+在include/trace/events/sched.h中
+
+```    
+#define TASK_COMM_LEN 16
+```
+
+伟大的stackoverflow再次立功了
+
+[http://stackoverflow.com/questions/8521474/task-comm-len-define-in-the-linux-kernel](http://stackoverflow.com/questions/8521474/task-comm-len-define-in-the-linux-kernel)
+
+2，mutt我发送的邮件在thread中看不到，只能看到其他人的邮件，而且我使用了多个folder，解决方法：
+
+```    
+set record="^" # ^ stands for current folder
+```
+
+

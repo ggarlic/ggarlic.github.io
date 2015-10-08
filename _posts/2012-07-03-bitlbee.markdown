@@ -1,0 +1,189 @@
+---
+author: admin
+comments: true
+date: 2012-07-03 15:39:26+00:00
+layout: post
+slug: bitlbee
+title: bitlbee
+wordpress_id: 900
+categories:
+- Blah
+---
+
+公司有个irc服务器，挂上去跟几个同事没事扯扯蛋，顺便想着能把gtalk什么的也挂上就好了，一番google找到了bitlbee。
+
+bitlbee官网上形容自己是：An IRC to other chat networks gateway
+
+支持的协议有：XMPP/Jabber (including Google Talk), MSN Messenger, Yahoo! Messenger, AIM and ICQ, and the Twitter microblogging network (plus all other Twitter API compatible services like identi.ca and status.net).
+
+
+## 安装 & 开机启动
+
+
+```
+yaourt -S bitlbee
+```
+
+修改/etc/bitlbee.conf中下面两项为：
+
+
+```
+RunMode = ForkDaemon
+User = bitlbee
+```
+
+为了开机启动，可加入rc.conf的DAEMON中
+
+
+## 连接
+
+
+在irssi中连接bitlbee服务器
+
+```    
+/connect localhost
+```
+
+加入channel：
+
+```    
+/join &bitlbee
+```
+
+bitlbee中，有两种channel，&开头的control channel与普通的#开头的channel
+
+
+### 连接gtalk(oauth方式)：
+
+
+[![gtalk](http://farm9.staticflickr.com/8028/7494689720_9a29f60d62_z.jpg)](http://www.flickr.com/photos/ggarlic/7494689720/)
+
+为了安全没有采用直接输入密码方的方式
+
+
+```
+acc add jabber you@gmail.com
+acc gtalk set oauth true
+acc gtalk on
+```
+
+
+然后会收到私信，形式类似于：
+
+```    
+15:29 <jabber_oauth> Open this URL in your browser to authenticate: https://...
+15:29 <jabber_oauth> Respond to this message with the returned authorization token.
+```
+
+点击链接打开浏览器进行oauth认证，并将得到的oauth code在收到私信的会话里粘贴发送。至此搞定。
+
+一些tips：
+
+1，server信息与上下线信息刷屏很烦人
+
+下载 [bitlbee_status_notice.pl](https://github.com/msparks/irssiscripts/blob/master/bitlbee_status_notice.pl)放到~/.irssi/scripts目录下
+
+arch中需要安装perl-time-duration这个包，不然会load错误
+在irssi中加载
+
+```    
+/script load bitlbee_status_notice.pl
+```
+
+干掉登录信息
+
+```    
+/set bitlbee_hide_joins ON
+```
+
+干掉下线信息
+
+```    
+/set bitlbee_hide_quts ON
+```
+
+干掉server mode信息：
+
+```    
+/ignore &bitlbee MODES
+```
+
+世界清净了
+
+
+### 连接Twitter(oauth方式)：
+
+
+[![twitter](http://farm9.staticflickr.com/8007/7494688876_bd53672408_z.jpg)](http://www.flickr.com/photos/ggarlic/7494688876/)
+
+```    
+account add twitter BitlBee yourname
+account on
+```
+
+后面同gtalk认证一样，粘贴回得到的PIN码
+
+使用很简单，直接说话是发推，像irc那样“name:blahblah”对话默认是回复对方最后一推，rt name是rt对方最后一推（rt或者回复其他推请见下面tip #2）
+
+fo人是
+
+```    
+add twitter name_to_follow
+```
+
+一些小tips
+
+1, 获得像IRC一样的体验：
+
+```    
+account twitter off
+account twitter set mode chat
+account twitter on
+```
+
+2, 回复/rt 非最后一推：
+
+至少需要3.0.3版
+
+```    
+account twitter off
+account twitter set show_ids true
+account twitter on
+```
+
+然后就可以使用reply id blahblah的形式来回复了
+
+上面就是需要用的设置，千万记住要保存设置  /save
+
+其他用法可以参考本文最后给出的几个链接.
+
+PS: 设置过程中刚学了一招，以后再也不同客户端崩溃之后拖着个小尾巴_了
+
+```    
+# kill ghost after crash (xxxx == pw)
+/msg NickServ ghost yournickname xxxx
+```
+
+
+
+
+## 参考：
+
+
+arch的Bitlbee wiki：[https://wiki.archlinux.org/index.php/Bitlbee](https://wiki.archlinux.org/index.php/Bitlbee)
+
+ubuntu的Bitlbee wiki：[https://help.ubuntu.com/community/Bitlbee](https://help.ubuntu.com/community/Bitlbee)
+
+bitlbee user guide: [http://static.quadpoint.org/bitlbee-user-guide.html](http://static.quadpoint.org/bitlbee-user-guide.html)
+
+bitlbee官方的连接gtalk的wiki：[http://wiki.bitlbee.org/HowtoGtalk](http://wiki.bitlbee.org/HowtoGtalk)
+
+同样是官方的连接twitter的wiki：[http://wiki.bitlbee.org/HowtoTwitter](http://wiki.bitlbee.org/HowtoTwitter)
+
+显示show_id的blog：[http://pthree.org/2011/06/15/improved-twitter-integration-in-bitlbee/](http://pthree.org/2011/06/15/improved-twitter-integration-in-bitlbee/)
+
+有几个关于bitlbee的不错的脚本：[https://github.com/msparks/irssiscripts](https://github.com/msparks/irssiscripts)
+
+关于irssi的其他设置，可以参考下我之前的两篇blog：[http://ggarlic.org/blog/2009/11/%E6%AD%A6%E8%A3%85%E4%BD%A0%E7%9A%84irssi/](http://ggarlic.org/blog/2009/11/%E6%AD%A6%E8%A3%85%E4%BD%A0%E7%9A%84irssi/)
+
+如果irssi窗口过多，可以安装advanced windowlist: [http://www.die-welt.net/2010/12/because-people-asked-my-irssi-advanced-windowlist-setup/](http://www.die-welt.net/2010/12/because-people-asked-my-irssi-advanced-windowlist-setup/)
