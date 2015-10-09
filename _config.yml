@@ -6,7 +6,7 @@ author_email: yangbo.ggarlic@gmail.com
 encoding: utf-8
 github_username: ggarlic
 twitter_username: ggarlic
-permalink: "/:year/:month/:day/:title"
+permalink: "/blog/:year/:month/:day/:title"
 description: cat ~ggarlic/life > /dev/null
 paginate: 10
 
