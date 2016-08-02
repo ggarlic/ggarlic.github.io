@@ -10,6 +10,8 @@ permalink: "/blog/:year/:month/:title"
 description: cat ~ggarlic/life > /dev/null
 paginate: 10
 
+gems:
+    - jekyll-feed
 highlighter: rouge
 redcarpet:
   extensions:
