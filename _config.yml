@@ -14,9 +14,3 @@ gems:
     - jekyll-feed
     - jekyll-paginate
 highlighter: rouge
-redcarpet:
-  extensions:
-    - no_intra_emphasis
-    - strikethrough
-    - autolink
-    - tables
