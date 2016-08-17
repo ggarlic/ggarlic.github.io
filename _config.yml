@@ -13,4 +13,5 @@ paginate: 10
 gems:
     - jekyll-feed
     - jekyll-paginate
+    - minima
 highlighter: rouge
